@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #92bbe4;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .dashboard-card {
+      max-width: 400px;
+      border-radius: 20px;
+      box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+      background-color: #ffffff;
+      padding: 40px;
+    }
+
+    .withdraw-button {
+      font-weight: bold;
+      background-color: #6f9c3f;
+      border: none;
+    }
+
+    .withdraw-button:hover {
+      background-color: #b30015;
+    }
+
+    .withdraw-button:focus {
+      outline: none;
+      box-shadow: none;
+    }
+
+    .withdraw-button:active {
+      transform: translateY(2px);
+    }
+
+    .withdraw-button:disabled {
+      opacity: 0.7;
+    }
+
+    .withdraw-button::after {
+      content: '';
+      display: block;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(to right, #007bff, #0056b3);
+      transition: width 0.3s;
+    }
+
+    .withdraw-button:hover::after {
+      width: 100%;
+    }
+
+    .dashboard-heading {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .dashboard-subheading {
+      font-size: 16px;
+      color: #6c757d;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .balance-text {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    
+    .modal-content {
+      background-color: #bcc7eb;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      border-radius: 10px;
+      width: 80%;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    }
+    
+    .button-container {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+    }
+    
+    .button-container button {
+      padding: 10px 20px;
+      background-color: #96bb6e;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    
+    .button-container button:hover {
+      background-color: #529497;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card dashboard-card">
+      <h1 class="dashboard-heading">Admin Dashboard</h1>
+      <p class="dashboard-subheading">Withdraw funds from smart contract.</p>
+      <p class="balance-text">Contract Balance: <span id="balance">Loading...</span> ETH</p>
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <button id="withdraw-button" class="btn btn-primary withdraw-button w-100">Withdraw</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.5.2/web3.min.js"></script>
+  <script>
+    async function getContractBalance() {
+      if (window.ethereum) {
+        const web3 = new Web3(window.ethereum);
+        const contractAddress = "0xc91ae67f18ea3f876c39e1f95332a68637e932e4"; // Replace with your smart contract address
+        const contractABI = [
+          {
+            "inputs": [],
+            "name": "getBalance",
+            "outputs": [
+              {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [],
+            "name": "withdraw",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+          }
+        ]; // Replace with your contract ABI
+        const contract = new web3.eth.Contract(contractABI, contractAddress);
+        const balance = await contract.methods.getBalance().call();
+        return web3.utils.fromWei(balance, 'ether');
+      } else {
+        throw new Error("MetaMask not detected. Please install MetaMask first.");
+      }
+    }
+
+    
+// Declare web3 outside the function
+// Declare web3 outside the function
+// Declare web3 outside the function
+let web3;
+
+async function withdrawFunds() {
+    try {
+        const amount = prompt("Enter the amount to withdraw (in ETH):");
+        if (!amount || isNaN(amount)) {
+            alert("Invalid amount.");
+            return;
+        }
+        const balance = await getContractBalance();
+        if (balance <= 0) {
+            alert("Insufficient balance in the contract.");
+            return;
+        }
+
+        // Ask user for withdrawal destination
+        const options = ['Your Account', 'Other Account'];
+        const selectedOptionIndex = await customPrompt("Select withdrawal destination:", options);
+        if (selectedOptionIndex === -1) {
+            return; // User cancelled
+        }
+
+        let withdrawAddress = window.ethereum.selectedAddress; // Default to connected account
+        if (selectedOptionIndex === 1) {
+            withdrawAddress = prompt("Enter the Ethereum address to withdraw to:");
+            if (!withdrawAddress || !web3.utils.isAddress(withdrawAddress)) {
+                alert("Invalid Ethereum address.");
+                return;
+            }
+        }
+
+        const contractAddress = "0xc91ae67f18ea3f876c39e1f95332a68637e932e4"; // Replace with your smart contract address
+        const contractABI = [
+            {
+                "inputs": [],
+                "name": "deposit",
+                "outputs": [],
+                "stateMutability": "payable",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "address payable",
+                        "name": "_to",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "_amount",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "withdraw",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "getAddress",
+                "outputs": [
+                    {
+                        "internalType": "address",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "getBalance",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ]; // Replace with your contract ABI
+        const contract = new web3.eth.Contract(contractABI, contractAddress);
+        await contract.methods.withdraw(withdrawAddress, web3.utils.toWei(amount, 'ether')).send({ from: window.ethereum.selectedAddress });
+        alert("Withdrawal successful!");
+        // Refresh contract balance
+        const updatedBalance = await getContractBalance();
+        document.getElementById("balance").textContent = updatedBalance;
+    } catch (error) {
+        console.error("Error withdrawing funds:", error);
+        alert(error.message);
+    }
+}
+
+async function customPrompt(message, options) {
+  return new Promise(resolve => {
+      const modal = document.createElement('div');
+      modal.classList.add('modal');
+      modal.style.display = 'block';
+
+      const modalContent = document.createElement('div');
+      modalContent.classList.add('modal-content');
+
+      const modalMessage = document.createElement('p');
+      modalMessage.textContent = message;
+
+      const buttonContainer = document.createElement('div');
+      buttonContainer.classList.add('button-container');
+
+      options.forEach((option, index) => {
+          const button = document.createElement('button');
+          button.textContent = option;
+          button.addEventListener('click', () => {
+              modal.remove();
+              resolve(index);
+          });
+          buttonContainer.appendChild(button);
+      });
+
+      modalContent.appendChild(modalMessage);
+      modalContent.appendChild(buttonContainer);
+      modal.appendChild(modalContent);
+
+      document.body.appendChild(modal);
+  });
+}
+
+
+// Initialize web3
+if (window.ethereum) {
+    web3 = new Web3(window.ethereum);
+} else {
+    alert("MetaMask not detected. Please install MetaMask first.");
+}
+
+document.getElementById("withdraw-button").addEventListener("click", withdrawFunds);
+
+// Get contract balance on page load
+getContractBalance()
+    .then(balance => document.getElementById("balance").textContent = balance)
+    .catch(error => console.error("Error fetching contract balance:", error.message));
+
+// Listen for MetaMask disconnect event
+window.ethereum.on('disconnect', (error) => {
+    console.log("MetaMask disconnected");
+    // Implement your disconnect logic here
+});
+
+
+
+// Initialize web3
+if (window.ethereum) {
+    web3 = new Web3(window.ethereum);
+} else {
+    alert("MetaMask not detected. Please install MetaMask first.");
+}
+
+  
+      
+
+    document.getElementById("withdraw-button").addEventListener("click", withdrawFunds);
+
+    // Get contract balance on page load
+    getContractBalance()
+      .then(balance => document.getElementById("balance").textContent = balance)
+      .catch(error => console.error("Error fetching contract balance:", error.message));
+
+    // Listen for MetaMask disconnect event
+    window.ethereum.on('disconnect', (error) => {
+      console.log("MetaMask disconnected");
+      // Implement your disconnect logic here
+    });
+  </script>
+</body>
+</html>

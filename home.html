@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evok - Furniture Selling App</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <style>
+    /* Add custom styles here */
+    .hero-section {
+      background-image: url('https://source.unsplash.com/1600x900/?furniture');
+      background-size: cover;
+      background-position: center;
+      height: 500px;
+      color: #fff;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .feature-card {
+      margin-bottom: 30px;
+    }
+    .feature-card .card-body {
+      text-align: center;
+    }
+    .feature-icon {
+      font-size: 3rem;
+      color: #007bff;
+    }
+    .testimonial-card {
+      margin-bottom: 30px;
+    }
+    .testimonial-card .card-body {
+      text-align: center;
+    }
+    .testimonial-icon {
+      font-size: 2rem;
+      color: #28a745;
+    }
+    .footer {
+      background-color: #333;
+      color: #fff;
+      padding: 20px 0;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="/"><img src="https://seeklogo.com/images/E/evok-logo-430837FE11-seeklogo.com.png" alt="Evok Logo" style="max-height: 40px;"></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="products.html">Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="about.html">About Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="contact.html">Contact Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="donation.html">Donate</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="Blog.html">Blog</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="cart.html">Cart</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="hero-section">
+  <div class="container">
+    <h1>Welcome to Evok</h1>
+    <p class="lead">Discover the perfect furniture for your home</p>
+    <a href="products.html" class="btn btn-primary">Shop Now</a>
+  </div>
+</div>
+
+<div class="container featured-products">
+  <h2 class="text-center mb-4">Why Choose Us</h2>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card feature-card">
+        <img src="https://media.madeindesign.com/nuxeo/products/8/9/square-table-corto-oiled-natural-oak_madeindesign_414188_original.jpg" class="card-img-top" alt="Quality Products">
+        <div class="card-body">
+          <h5 class="card-title">Quality Products</h5>
+          <p class="card-text">We offer a wide range of high-quality furniture to suit your needs.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card feature-card">
+        <img src="https://microdinc.com/wp-content/uploads/2020/11/retail-customer-service-600x600-1.jpg" class="card-img-top" alt="Excellent Service">
+        <div class="card-body">
+          <h5 class="card-title">Excellent Service</h5>
+          <p class="card-text">Our friendly and knowledgeable staff are here to assist you every step of the way.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card feature-card">
+        <img src="https://eadn-wc03-6532417.nxedge.io/cdn/media/images/Garden-1.webp" class="card-img-top" alt="Fast Delivery">
+        <div class="card-body">
+          <h5 class="card-title">Fast Pickup</h5>
+          <p class="card-text">Just order and visit your nearest branch, ywe will get your order ready within 5 minutes. </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container testimonial">
+  <h2 class="text-center mb-4">Customer Reviews</h2>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card testimonial-card">
+        <div class="card-body">
+          <i class="bi bi-chat-right-quote-fill testimonial-icon"></i>
+          <p class="card-text">"I bought the Cozy Corner Sectional and it has completely transformed my living room! It's incredibly comfortable, with just the right amount of firmness. The fabric is soft and easy to clean, which is a huge plus with kids and pets around. Overall, very satisfied with my purchase!"</p>
+          <p class="text-end fw-bold">- John Doe</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card testimonial-card">
+        <div class="card-body">
+          <i class="bi bi-chat-right-quote-fill testimonial-icon"></i>
+          <p class="card-text">"I recently purchased the Modernica Sofa from this app and I couldn't be happier! The sleek design fits perfectly with my contemporary decor, and the quality is top-notch. The delivery was prompt and the customer service was excellent. Highly recommend!"</p>
+          <p class="text-end fw-bold">- Jane Smith</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card testimonial-card">
+        <div class="card-body">
+          <i class="bi bi-chat-right-quote-fill testimonial-icon"></i>
+          <p class="card-text">"Living in a small apartment, space is always a concern for me. That's why I was thrilled to find the Murphy Bed on this app. It's a game-changer! Not only is it comfortable to sleep on, but it also folds up seamlessly during the day, giving me so much more space to move around. Highly recommend for anyone living in a small space!"</p>
+          <p class="text-end fw-bold">- Emily Johnson</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>&copy; 2024 Evok. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- Bootstrap JS Bundle (Popper.js included) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

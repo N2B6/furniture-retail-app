@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #b26313;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-card {
+      max-width: 400px;
+      border-radius: 20px;
+      box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+      background-color: #ffffff;
+      padding: 40px;
+    }
+
+    .login-button {
+      font-weight: bold;
+      background-color: #007bff;
+      border: none;
+    }
+
+    .login-button:hover {
+      background-color: #0056b3;
+    }
+
+    .login-button:focus {
+      outline: none;
+      box-shadow: none;
+    }
+
+    .login-button:active {
+      transform: translateY(2px);
+    }
+
+    .login-button:disabled {
+      opacity: 0.7;
+    }
+
+    .login-button::after {
+      content: '';
+      display: block;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(to right, #007bff, #0056b3);
+      transition: width 0.3s;
+    }
+
+    .login-button:hover::after {
+      width: 100%;
+    }
+
+    .login-heading {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .login-subheading {
+      font-size: 16px;
+      color: #6c757d;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .login-icon {
+      width: 100px;
+      margin: 0 auto;
+      display: block;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card login-card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" alt="MetaMask Logo" class="login-icon">
+      <h1 class="login-heading">Connect with MetaMask</h1>
+      <p class="login-subheading">Please connect to your MetaMask account to proceed.</p>
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+              <button
+                id="login-button"
+                class="btn btn-primary login-button w-100"
+                onclick="loginWithMetaMask()"
+              >
+                Login with MetaMask
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.ethers.io/lib/ethers-5.6.4.umd.min.js"></script>
+    <script>
+      async function loginWithMetaMask() {
+        try {
+            // Fetch exchange rate from API
+            const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=eur');
+            const data = await response.json();
+            const exchangeRate = data.ethereum.eur;
+    
+            // Calculate total in Ether
+            let total = 0;
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.forEach(item => {
+                total += item.price * item.quantity; // Update total based on item price and quantity
+            });
+            const totalInEther = total / exchangeRate;
+    
+            // Redirect to payments page with updated total amount in Ether
+            window.location.href = `payment.html?amount=${totalInEther.toFixed(6)}`;
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Failed to fetch exchange rate. Please try again.");
+        }
+    }
+    
+        
+        
+    </script>
+  </body>
+</html>
