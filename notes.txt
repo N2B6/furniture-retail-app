@@ -9,3 +9,22 @@ Create Files index.html / server.js
 New File Transactions.sol 
 
 Update Server.js 
+
+
+How to Install Node.js and Run server.js
+1. Install Node.js and npm
+Go to Node.js website.
+Download and install the LTS version for your OS.
+Ensure you check the box that says "Add Node.js to PATH" during installation.
+
+2. Verify Installation
+Open your terminal (Command Prompt, PowerShell, or VSCode terminal).
+Run the following commands to check versions:
+node -v
+npm -v
+
+3. Run Your Server
+Navigate to the directory containing your server.js file.
+Run the following command to start the server:
+
+node server.js

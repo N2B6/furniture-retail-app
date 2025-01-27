@@ -3,6 +3,9 @@ const path = require("path");
 
 const app = express();
 
+// Serve static files from the 'Images' folder
+app.use('/Images', express.static(path.join(__dirname, 'Images')));
+
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname + "/home.html"));
 });
