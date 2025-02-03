@@ -72,8 +72,81 @@
         strong {
             color: var(--secondary-color);
         }
+
+        .print-button {
+            position: fixed;
+            top: 100px;
+            right: 30px;
+            background: var(--gradient);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .print-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        @media print {
+            .print-button {
+                display: none;
+            }
+        }
+
+        /* PDF-specific styles */
+        .pdf-container {
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(0,184,148,0.1), rgba(85,239,196,0.1));
+            border-radius: 15px;
+        }
+
+        .pdf-header {
+            text-align: center;
+            padding: 20px;
+            border-bottom: 2px solid var(--secondary-color);
+            margin-bottom: 30px;
+        }
+
+        .pdf-logo {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+
+        .pdf-title {
+            color: var(--primary-color);
+            font-size: 28px;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+
+        .pdf-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .pdf-footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid var(--secondary-color);
+            font-size: 14px;
+            color: var(--primary-color);
+        }
     </style>
     <link rel="icon" type="image/png" href="Images/evok-logo-430837FE11-seeklogo.com.png">
+    <!-- Add html2pdf library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 
@@ -145,6 +218,11 @@
     </div>
 </div>
 
+<!-- Add print button -->
+<button class="print-button" onclick="generatePDF()">
+    <i class="fas fa-download"></i> Download Receipt
+</button>
+
 <script>
     // Get transaction details from query parameters
     const urlParams = new URLSearchParams(window.location.search);
@@ -152,10 +230,63 @@
     const transactionId = urlParams.get('transactionId');
     const userId = urlParams.get('address') || 'Not connected';
 
+    // Validate receipt access
+    async function validateReceipt() {
+        try {
+            // Check if MetaMask is installed
+            if (typeof window.ethereum === "undefined") {
+                alert("Please connect with MetaMask to view your receipt");
+                window.location.href = 'cart.html';
+                return;
+            }
+
+            // Get current MetaMask account
+            const accounts = await ethereum.request({method: "eth_requestAccounts"});
+            const currentAccount = accounts[0];
+
+            // Verify if the current user is the one who made the purchase
+            if (currentAccount.toLowerCase() !== userId.toLowerCase()) {
+                alert("Unauthorized access. You can only view your own receipts.");
+                window.location.href = 'products.html';
+                return;
+            }
+
+            // Verify transaction exists and matches the amount
+            const web3 = new Web3(window.ethereum);
+            const transaction = await web3.eth.getTransaction(transactionId);
+            
+            if (!transaction) {
+                alert("Invalid transaction. Redirecting...");
+                window.location.href = 'products.html';
+                return;
+            }
+
+            // Convert transaction value to ether and compare
+            const txAmount = web3.utils.fromWei(transaction.value, 'ether');
+            if (parseFloat(txAmount) !== parseFloat(amountPaidEther)) {
+                alert("Receipt details mismatch. Redirecting...");
+                window.location.href = 'products.html';
+                return;
+            }
+
+            // If validation passes, show the receipt content
+            document.querySelector('.container.mt-4').style.display = 'block';
+        } catch (error) {
+            console.error("Validation error:", error);
+            alert("Error validating receipt access. Please try again.");
+            window.location.href = 'products.html';
+        }
+    }
+
+    // Initially hide the receipt content
+    document.querySelector('.container.mt-4').style.display = 'none';
+    
+    // Run validation when page loads
+    validateReceipt();
+
     // Format the address to be more readable if it exists
     let displayUserId = userId;
     if (userId && userId !== 'Not connected') {
-        // Keep first 6 and last 4 characters, replace middle with ellipsis
         displayUserId = `${userId.substring(0, 6)}...${userId.substring(userId.length - 4)}`;
     }
     document.getElementById('user-id').textContent = displayUserId;
@@ -184,7 +315,88 @@
     // Get current date and time
     const orderTimestamp = new Date().toLocaleString();
     document.getElementById('order-timestamp').textContent = orderTimestamp;
+
+    // Updated PDF generation function
+    function generatePDF() {
+        // Create a new container for PDF content
+        const pdfContent = document.createElement('div');
+        pdfContent.className = 'pdf-container';
+
+        // Add header with logo
+        const header = document.createElement('div');
+        header.className = 'pdf-header';
+        header.innerHTML = `
+            <img src="https://seeklogo.com/images/E/evok-logo-430837FE11-seeklogo.com.png" 
+                 alt="Evok Logo" 
+                 class="pdf-logo">
+            <h1 class="pdf-title">Purchase Receipt</h1>
+            <p style="color: var(--secondary-color);">${orderTimestamp}</p>
+        `;
+        pdfContent.appendChild(header);
+
+        // Customer Details Section
+        const customerSection = document.createElement('div');
+        customerSection.className = 'pdf-section';
+        customerSection.innerHTML = `
+            <h3 style="color: var(--secondary-color); margin-bottom: 15px;">Customer Details</h3>
+            <p><strong>MetaMask ID:</strong> ${displayUserId}</p>
+            <p><strong>Transaction Hash:</strong> ${transactionId || 'N/A'}</p>
+        `;
+        pdfContent.appendChild(customerSection);
+
+        // Purchase Details Section
+        const purchaseSection = document.createElement('div');
+        purchaseSection.className = 'pdf-section';
+        purchaseSection.innerHTML = `
+            <h3 style="color: var(--secondary-color); margin-bottom: 15px;">Purchase Details</h3>
+            <div style="margin-bottom: 20px;">
+                ${Array.from(purchasedItemsList.children)
+                    .map(item => `<p style="padding: 8px 0; border-bottom: 1px solid #eee;">${item.textContent}</p>`)
+                    .join('')}
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 20px; padding-top: 20px; border-top: 2px solid #eee;">
+                <div>
+                    <p><strong>Total Amount (EUR):</strong> €${totalAmount.toFixed(2)}</p>
+                    <p><strong>Total Amount (ETH):</strong> ${amountPaidEther} Ether</p>
+                </div>
+            </div>
+        `;
+        pdfContent.appendChild(purchaseSection);
+
+        // Add footer
+        const footer = document.createElement('div');
+        footer.className = 'pdf-footer';
+        footer.innerHTML = `
+            <p>Thank you for shopping with Evok!</p>
+            <p>Please bring this receipt to our store for pickup.</p>
+            <p style="color: var(--secondary-color);">Your items will be ready within 5 minutes.</p>
+        `;
+        pdfContent.appendChild(footer);
+
+        // Configure PDF options
+        const opt = {
+            margin: [0.5, 0.5],
+            filename: `evok-receipt-${orderTimestamp.replace(/[/\\?%*:|"<>]/g, '-')}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { 
+                scale: 2,
+                useCORS: true,
+                logging: false
+            },
+            jsPDF: { 
+                unit: 'in', 
+                format: 'a4', 
+                orientation: 'portrait'
+            }
+        };
+
+        // Generate PDF
+        html2pdf().set(opt).from(pdfContent).save();
+    }
 </script>
+
+<!-- Add Font Awesome for the download icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 </body>
 </html>
