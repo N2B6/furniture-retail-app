@@ -24,9 +24,6 @@ app.get("/payment.html", (req, res) => {
 app.get("/cart.html", (req, res) => {
     res.sendFile(path.join(__dirname + "/cart.html"));
 });
-app.get("/payment.html", (req, res) => {
-    res.sendFile(path.join(__dirname + "/payment.html"));
-});
 app.get("/donation.html", (req, res) => {
     res.sendFile(path.join(__dirname + "/donation.html"));
 });
