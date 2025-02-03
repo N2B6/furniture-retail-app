@@ -146,9 +146,19 @@
 </div>
 
 <script>
-    // Get user MetaMask ID
-    const userId = sessionStorage.getItem('userAddress');
-    document.getElementById('user-id').textContent = userId;
+    // Get transaction details from query parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const amountPaidEther = urlParams.get('amount');
+    const transactionId = urlParams.get('transactionId');
+    const userId = urlParams.get('address') || 'Not connected';
+
+    // Format the address to be more readable if it exists
+    let displayUserId = userId;
+    if (userId && userId !== 'Not connected') {
+        // Keep first 6 and last 4 characters, replace middle with ellipsis
+        displayUserId = `${userId.substring(0, 6)}...${userId.substring(userId.length - 4)}`;
+    }
+    document.getElementById('user-id').textContent = displayUserId;
 
     // Fetch purchased items from local storage
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -166,11 +176,6 @@
 
     // Display total amount in Euro
     document.getElementById('total-amount').textContent = `€${totalAmount.toFixed(2)}`;
-
-    // Get transaction details from query parameter
-    const urlParams = new URLSearchParams(window.location.search);
-    const amountPaidEther = urlParams.get('amount');
-    const transactionId = urlParams.get('transactionId');
 
     // Display transaction hash and amount paid in Ether
     document.getElementById('transaction-hash').textContent = transactionId || 'N/A'; // Transaction hash

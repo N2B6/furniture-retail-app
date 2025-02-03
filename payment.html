@@ -168,11 +168,11 @@
                 // Get the transaction ID from the receipt
                 const transactionId = receipt.transactionHash;
         
-                // Redirect to the receipt page with transaction ID and amount paid as query parameters
+                // Redirect to the receipt page with transaction ID, amount paid, and user address
                 const amountInEther = parseFloat(document.getElementById('amount').innerText);
                 const amountInEtherFormatted = amountInEther.toFixed(6);
                 alert('Your Payment has been made successfully.');
-                window.location.href = `receipt.html?amount=${amountInEtherFormatted}&transactionId=${transactionId}`;
+                window.location.href = `receipt.html?amount=${amountInEtherFormatted}&transactionId=${transactionId}&address=${account}`;
             } catch (error) {
                 console.error("Error:", error);
                 alert("Failed to make payment. Please try again.");
