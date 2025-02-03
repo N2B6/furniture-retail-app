@@ -8,40 +8,149 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <style>
+        :root {
+            --primary-color: #2d3436;
+            --secondary-color: #00b894;
+            --accent-color: #fd79a8;
+            --background-color: #f8f9fa;
+            --text-color: #2d3436;
+            --gradient: linear-gradient(135deg, var(--secondary-color), #55efc4);
+        }
+
         body {
-            background-color: #7170b1; /* Light gray background */
-            padding-top: 60px; /* Add space for fixed navbar */
+            font-family: 'Poppins', sans-serif;
+            background: var(--gradient);
+            min-height: 100vh;
         }
 
         .card {
-            border: none;
-            color: azure;
-            background-color:rgb(26, 56, 46);
-            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1); /* Soft shadow */
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            transform: translateY(0);
+            transition: all 0.3s ease;
+            color: var(--text-color);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
         }
 
         .card-body {
             padding: 2rem;
         }
 
-        .btn-primary {
-            background-color: #007bff; /* Blue primary button color */
+        .form-control {
             border: none;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 0;
+            padding: 15px 0;
+            background: transparent;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
         }
 
-        .btn-primary:hover {
-            background-color: #0056b3; /* Darker blue on hover */
+        .form-control:focus {
+            box-shadow: none;
+            border-color: var(--secondary-color);
+            background: transparent;
         }
 
         label {
-            font-weight: bold; /* Bold labels */
+            font-weight: 500;
+            color: var(--primary-color);
+            margin-bottom: 10px;
         }
 
-        input[type="number"],
-        textarea {
-            border: 1px solid #ced4da; /* Light gray border */
-            border-radius: 5px;
-            padding: 0.5rem;
+        .btn-primary {
+            background: var(--gradient);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .donation-title {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .donation-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+
+        .donation-description {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--text-color);
+            line-height: 1.8;
+        }
+
+        .input-group-text {
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.8) !important;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar-brand img {
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand:hover img {
+            transform: scale(1.05);
+        }
+
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
         }
     </style>
     <link rel="icon" type="image/png" href="Images/evok-logo-430837FE11-seeklogo.com.png">

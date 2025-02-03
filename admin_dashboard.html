@@ -7,9 +7,19 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="icon" type="image/png" href="Images/evok-logo-430837FE11-seeklogo.com.png">
   <style>
+    :root {
+        --primary-color: #2d3436;
+        --secondary-color: #00b894;
+        --accent-color: #fd79a8;
+        --background-color: #f8f9fa;
+        --text-color: #2d3436;
+        --gradient: linear-gradient(135deg, var(--secondary-color), #55efc4);
+    }
+
     body {
-      background-color: #92bbe4;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-family: 'Poppins', sans-serif;
+        background: var(--gradient);
+        min-height: 100vh;
     }
 
     .container {
@@ -20,21 +30,59 @@
     }
 
     .dashboard-card {
-      max-width: 400px;
-      border-radius: 20px;
-      box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
-      background-color: #ffffff;
-      padding: 40px;
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        padding: 40px;
+        transform: translateY(0);
+        transition: all 0.3s ease;
+    }
+
+    .dashboard-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .dashboard-heading {
+        color: var(--primary-color);
+        position: relative;
+        padding-bottom: 15px;
+        margin-bottom: 30px;
+    }
+
+    .dashboard-heading::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: var(--gradient);
+        border-radius: 2px;
     }
 
     .withdraw-button {
-      font-weight: bold;
-      background-color: #6f9c3f;
-      border: none;
+        background: var(--gradient);
+        border: none;
+        padding: 15px 30px;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
     }
 
     .withdraw-button:hover {
-      background-color: #b30015;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .balance-display {
+        font-size: 2rem;
+        font-weight: 600;
+        color: var(--secondary-color);
+        text-align: center;
+        margin: 20px 0;
     }
 
     .withdraw-button:focus {
@@ -63,13 +111,6 @@
       width: 100%;
     }
 
-    .dashboard-heading {
-      font-size: 28px;
-      font-weight: bold;
-      margin-bottom: 30px;
-      text-align: center;
-    }
-
     .dashboard-subheading {
       font-size: 16px;
       color: #6c757d;
@@ -77,12 +118,6 @@
       margin-bottom: 20px;
     }
 
-    .balance-text {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 20px;
-      text-align: center;
-    }
     .modal {
       display: none;
       position: fixed;
@@ -129,7 +164,7 @@
     <div class="card dashboard-card">
       <h1 class="dashboard-heading">Admin Dashboard</h1>
       <p class="dashboard-subheading">Withdraw funds from smart contract.</p>
-      <p class="balance-text">Contract Balance: <span id="balance">Loading...</span> ETH</p>
+      <p class="balance-display">Contract Balance: <span id="balance">Loading...</span> ETH</p>
       <div class="row justify-content-center">
         <div class="col-md-8">
           <button id="withdraw-button" class="btn btn-primary withdraw-button w-100">Withdraw</button>

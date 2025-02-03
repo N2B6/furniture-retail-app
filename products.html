@@ -8,21 +8,139 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom CSS -->
   <style>
+    :root {
+      --primary-color: #2d3436;
+      --secondary-color: #00b894;
+      --accent-color: #fd79a8;
+      --background-color: #f8f9fa;
+      --text-color: #2d3436;
+      --gradient: linear-gradient(135deg, var(--secondary-color), #55efc4);
+    }
+
+    body {
+      background: var(--background-color);
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .card {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transform: translateY(0);
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary {
+      background: var(--gradient);
+      border: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .product-heading {
+      color: white;
+      position: relative;
+      padding-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .product-heading::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: var(--gradient);
+      border-radius: 2px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
     body {
       background-image: url('https://images.pexels.com/photos/7319336/pexels-photo-7319336.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
       background-size: cover;
     }
 
-    .product-heading {
-      font-weight: bold;
-      font-size: 2.5rem;
-      color: rgb(112, 9, 9);
-      text-align: center;
-      margin-top: 30px;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    .card-img-top {
+      height: 250px;
+      object-fit: cover;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-body {
+      padding: 1.5rem;
     }
 
     /* Add custom styles here */
+    .product-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      background: var(--gradient);
+      border-radius: 20px;
+      padding: 2px;
+    }
+
+    .quantity-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: none;
+      background: white;
+      color: var(--secondary-color);
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .quantity-btn:hover {
+      background: var(--secondary-color);
+      color: white;
+    }
+
+    .quantity-display {
+      color: white;
+      font-weight: bold;
+      min-width: 30px;
+      text-align: center;
+    }
+
+    .btn-remove {
+      background: var(--accent-color);
+      border: none;
+      border-radius: 20px;
+      color: white;
+      padding: 6px 15px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-remove:hover {
+      background: #e84393;
+      transform: translateY(-2px);
+    }
   </style>
   <link rel="icon" type="image/png" href="Images/evok-logo-430837FE11-seeklogo.com.png">
 </head>
@@ -52,7 +170,7 @@
             <a class="nav-link" href="Blog.html">Blog</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="cart.html">Cart</a>
+            <a class="nav-link" href="cart.html">Cart <span class="badge bg-danger cart-counter">0</span></a>
           </li>
         </ul>
       </div>
@@ -60,140 +178,140 @@
   </nav>
 
 <div class="container mt-4">
-  <h2 class="product-heading">Our Products</h2>
+  <h2 class="product-heading text-center mb-4">Our Products</h2>
   <div class="row row-cols-1 row-cols-md-3 g-4" id="product-list">
     <div class="col">
       <div class="card h-100">
-        <img src="images/il_794xN.2487713900_tajg.jpg" class="card-img-top" alt="Product">
+        <img src="images/il_794xN.2487713900_tajg.jpg" class="card-img-top" alt="Retro Armchair">
         <div class="card-body">
           <h5 class="card-title">Retro Armchair</h5>
-          <p class="card-text">Vintage-style armchair with floral upholstery, perfect for adding a touch of nostalgia to your living room.</p>
+          <p class="card-text">Vintage-style armchair with floral upholstery, perfect for adding a touch of nostalgia to your living room. Features solid wood frame and comfortable padding.</p>
           <p class="card-text"><strong>€249.99</strong></p>
           <button onclick="addToCart('Retro Armchair', 249.99, this)" class="btn btn-primary">Add to Cart</button>
         </div>
       </div>
     </div>
     <div class="col">
-        <div class="card h-100">
-          <img src="images/il_794xN.5668125123_77s1.jpg" class="card-img-top" alt="Product">
-          <div class="card-body">
-            <h5 class="card-title">Mid-Century Modern Coffee Table</h5>
-            <p class="card-text">Sleek and minimalist coffee table featuring a walnut finish and hairpin legs, inspired by mid-century design.</p>
-            <p class="card-text"><strong>€179.99</strong></p>
-            <button onclick="addToCart('Mid-Century Modern Coffee Table', 179.99, this)" class="btn btn-primary">Add to Cart</button>
-          </div>
+      <div class="card h-100">
+        <img src="images/il_794xN.5668125123_77s1.jpg" class="card-img-top" alt="Mid-Century Modern Coffee Table">
+        <div class="card-body">
+          <h5 class="card-title">Mid-Century Modern Coffee Table</h5>
+          <p class="card-text">Sleek and minimalist coffee table featuring a walnut finish and hairpin legs. Dimensions: 120cm x 60cm x 45cm. Perfect for modern living spaces.</p>
+          <p class="card-text"><strong>€179.99</strong></p>
+          <button onclick="addToCart('Mid-Century Modern Coffee Table', 179.99, this)" class="btn btn-primary">Add to Cart</button>
         </div>
       </div>
-      <div class="col">
-        <div class="card h-100">
-          <img src="images/912tjkbUpOL.SS700.jpg" class="card-img-top" alt="Product">
-          <div class="card-body">
-            <h5 class="card-title">Queen Size Platform Bed</h5>
-            <p class="card-text">Elegant platform bed crafted from solid oak wood, offering both style and durability for a restful night's sleep.</p>
-            <p class="card-text"><strong>€699.99</strong></p>
-            <button onclick="addToCart('Queen Size Platform Bed', 699.99, this)" class="btn btn-primary">Add to Cart</button>
-          </div>
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        <img src="images/912tjkbUpOL.SS700.jpg" class="card-img-top" alt="Queen Size Platform Bed">
+        <div class="card-body">
+          <h5 class="card-title">Queen Size Platform Bed</h5>
+          <p class="card-text">Elegant platform bed crafted from solid oak wood, offering both style and durability for a restful night's sleep.</p>
+          <p class="card-text"><strong>€699.99</strong></p>
+          <button onclick="addToCart('Queen Size Platform Bed', 699.99, this)" class="btn btn-primary">Add to Cart</button>
         </div>
       </div>
-      <div class="col">
-        <div class="card h-100">
-          <img src="images/il_794xN.5270657003_cho5.jpg" class="card-img-top" alt="Product">
-          <div class="card-body">
-            <h5 class="card-title">Industrial Writing Desk</h5>
-            <p class="card-text"> Industrial-inspired writing desk constructed from reclaimed wood and black metal frame, ideal for creating a rustic workspace.</p>
-            <p class="card-text"><strong>€329.99</strong></p>
-            <button onclick="addToCart('Industrial Writing Desk', 329.99, this)" class="btn btn-primary">Add to Cart</button>
-          </div>
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        <img src="images/il_794xN.5270657003_cho5.jpg" class="card-img-top" alt="Product">
+        <div class="card-body">
+          <h5 class="card-title">Industrial Writing Desk</h5>
+          <p class="card-text"> Industrial-inspired writing desk constructed from reclaimed wood and black metal frame, ideal for creating a rustic workspace.</p>
+          <p class="card-text"><strong>€329.99</strong></p>
+          <button onclick="addToCart('Industrial Writing Desk', 329.99, this)" class="btn btn-primary">Add to Cart</button>
         </div>
       </div>
-      <div class="col">
-        <div class="card h-100">
-          <img src="images/s-l500.jpg" class="card-img-top" alt="Product">
-          <div class="card-body">
-            <h5 class="card-title">Scandinavian Dining Chair Set</h5>
-            <p class="card-text">Set of four dining chairs featuring ergonomic design, upholstered seats, and beech wood legs, embodying the simplicity and elegance of Scandinavian style.</p>
-            <p class="card-text"><strong>€299.99 (Set of 4)</strong></p>
-            <button onclick="addToCart('Scandinavian Dining Chair Set', 299.99, this)" class="btn btn-primary">Add to Cart</button>
-          </div>
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        <img src="images/s-l500.jpg" class="card-img-top" alt="Product">
+        <div class="card-body">
+          <h5 class="card-title">Scandinavian Dining Chair Set</h5>
+          <p class="card-text">Set of four dining chairs featuring ergonomic design, upholstered seats, and beech wood legs, embodying the simplicity and elegance of Scandinavian style.</p>
+          <p class="card-text"><strong>€299.99 (Set of 4)</strong></p>
+          <button onclick="addToCart('Scandinavian Dining Chair Set', 299.99, this)" class="btn btn-primary">Add to Cart</button>
         </div>
       </div>
-      <div class="col">
-        <div class="card h-100">
-          <img src="images/bookshelf_2_2000x.jpg" class="card-img-top" alt="Product">
-          <div class="card-body">
-            <h5 class="card-title">Modern Bookshelf with Geometric Design</h5>
-            <p class="card-text">Contemporary bookshelf with an eye-catching geometric silhouette, providing ample storage space for books and decorative items.</p>
-            <p class="card-text"><strong>€189.99</strong></p>
-            <button onclick="addToCart('Modern Bookshelf with Geometric Design', 189.99, this)" class="btn btn-primary">Add to Cart</button>
-          </div>
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        <img src="images/bookshelf_2_2000x.jpg" class="card-img-top" alt="Product">
+        <div class="card-body">
+          <h5 class="card-title">Modern Bookshelf with Geometric Design</h5>
+          <p class="card-text">Contemporary bookshelf with an eye-catching geometric silhouette, providing ample storage space for books and decorative items.</p>
+          <p class="card-text"><strong>€189.99</strong></p>
+          <button onclick="addToCart('Modern Bookshelf with Geometric Design', 189.99, this)" class="btn btn-primary">Add to Cart</button>
         </div>
       </div>
-      <div class="col">
-        <div class="card h-100">
-          <img src="images/il_fullxfull.4257151127_39lv.jpg" class="card-img-top" alt="Product">
-          <div class="card-body">
-            <h5 class="card-title">Art Deco Floor Lamp</h5>
-            <p class="card-text">Art Deco-inspired floor lamp with a brass finish and frosted glass shade, adding a touch of glamour to any room</p>
-            <p class="card-text"><strong>€176.99</strong></p>
-            <button onclick="addToCart('Art Deco Floor Lamp', 176.99, this)" class="btn btn-primary">Add to Cart</button>
-          </div>
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        <img src="images/il_fullxfull.4257151127_39lv.jpg" class="card-img-top" alt="Product">
+        <div class="card-body">
+          <h5 class="card-title">Art Deco Floor Lamp</h5>
+          <p class="card-text">Art Deco-inspired floor lamp with a brass finish and frosted glass shade, adding a touch of glamour to any room</p>
+          <p class="card-text"><strong>€176.99</strong></p>
+          <button onclick="addToCart('Art Deco Floor Lamp', 176.99, this)" class="btn btn-primary">Add to Cart</button>
         </div>
       </div>
-      <div class="col">
-        <div class="card h-100">
-          <img src="images/BUNLEX01469693_1_Supersize.jpg" class="card-img-top" alt="Product">
-          <div class="card-body">
-            <h5 class="card-title">Mirrored Wardrobe</h5>
-            <p class="card-text"> Mirrored wardrobe featuring sliding doors and internal shelving, offering both functionality and style for organizing your clothing collection.</p>
-            <p class="card-text"><strong>€499.99</strong></p>
-            <button onclick="addToCart('Mirrored Wardrobe', 499.99, this)" class="btn btn-primary">Add to Cart</button>
-          </div>
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        <img src="images/BUNLEX01469693_1_Supersize.jpg" class="card-img-top" alt="Product">
+        <div class="card-body">
+          <h5 class="card-title">Mirrored Wardrobe</h5>
+          <p class="card-text"> Mirrored wardrobe featuring sliding doors and internal shelving, offering both functionality and style for organizing your clothing collection.</p>
+          <p class="card-text"><strong>€499.99</strong></p>
+          <button onclick="addToCart('Mirrored Wardrobe', 499.99, this)" class="btn btn-primary">Add to Cart</button>
         </div>
       </div>
-      <div class="col">
-        <div class="card h-100">
-          <img src="images/Romero-Dining-Table-with-Mendoza-Chairs-scaled.webp" class="card-img-top" alt="Outdoor Patio Set">
-          <div class="card-body">
-            <h5 class="card-title">Outdoor Patio Set</h5>
-            <p class="card-text">Outdoor patio set including a table and four chairs, crafted from weather-resistant rattan and featuring plush cushions for outdoor relaxation and dining.</p>
-            <p class="card-text"><strong>€699.99 (Set)</strong></p>
-            <button onclick="addToCart('Outdoor Patio Set', 699.99, this)" class="btn btn-primary">Add to Cart</button>
-          </div>
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        <img src="images/Romero-Dining-Table-with-Mendoza-Chairs-scaled.webp" class="card-img-top" alt="Outdoor Patio Set">
+        <div class="card-body">
+          <h5 class="card-title">Outdoor Patio Set</h5>
+          <p class="card-text">Outdoor patio set including a table and four chairs, crafted from weather-resistant rattan and featuring plush cushions for outdoor relaxation and dining.</p>
+          <p class="card-text"><strong>€699.99 (Set)</strong></p>
+          <button onclick="addToCart('Outdoor Patio Set', 699.99, this)" class="btn btn-primary">Add to Cart</button>
         </div>
       </div>
-      <div class="col">
-        <div class="card h-100">
-          <img src="images/il_794xN.1610593728_r6jm.jpg" class="card-img-top" alt="Product">
-          <div class="card-body">
-            <h5 class="card-title">Rustic Farmhouse Dining Table</h5>
-            <p class="card-text">Solid wood dining table with a distressed finish and trestle-style base, evoking the charm of a rustic farmhouse dining area.</p>
-            <p class="card-text"><strong>€449.99</strong></p>
-            <button onclick="addToCart('Rustic Farmhouse Dining Table', 449.99, this)" class="btn btn-primary">Add to Cart</button>
-          </div>
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        <img src="images/il_794xN.1610593728_r6jm.jpg" class="card-img-top" alt="Product">
+        <div class="card-body">
+          <h5 class="card-title">Rustic Farmhouse Dining Table</h5>
+          <p class="card-text">Solid wood dining table with a distressed finish and trestle-style base, evoking the charm of a rustic farmhouse dining area.</p>
+          <p class="card-text"><strong>€449.99</strong></p>
+          <button onclick="addToCart('Rustic Farmhouse Dining Table', 449.99, this)" class="btn btn-primary">Add to Cart</button>
         </div>
       </div>
-      <div class="col">
-        <div class="card h-100">
-          <img src="images/Marshall-Uxbridge-Voice-7-of-8-1536x864.jpg" class="card-img-top" alt="Product">
-          <div class="card-body">
-            <h5 class="card-title">Smart Home Assistant Speaker</h5>
-            <p class="card-text">Voice-activated smart home assistant speaker with built-in virtual assistant, allowing you to control smart devices, play music, and more with simple voice commands.</p>
-            <p class="card-text"><strong>€129.99</strong></p>
-            <button onclick="addToCart('Smart Home Assistant Speaker', 129.99, this)" class="btn btn-primary">Add to Cart</button>
-          </div>
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        <img src="images/Marshall-Uxbridge-Voice-7-of-8-1536x864.jpg" class="card-img-top" alt="Product">
+        <div class="card-body">
+          <h5 class="card-title">Smart Home Assistant Speaker</h5>
+          <p class="card-text">Voice-activated smart home assistant speaker with built-in virtual assistant, allowing you to control smart devices, play music, and more with simple voice commands.</p>
+          <p class="card-text"><strong>€129.99</strong></p>
+          <button onclick="addToCart('Smart Home Assistant Speaker', 129.99, this)" class="btn btn-primary">Add to Cart</button>
         </div>
       </div>
-      <div class="col">
-        <div class="card h-100">
-          <img src="images/585880390_max.jpg" class="card-img-top" alt="Product">
-          <div class="card-body">
-            <h5 class="card-title">Bohemian Area Rug</h5>
-            <p class="card-text">Boho-chic area rug featuring vibrant colors and intricate patterns, adding warmth and personality to your living space.</p>
-            <p class="card-text"><strong>€149.99</strong></p>
-            <button onclick="addToCart('Bohemian Area Rug', 149.99, this)" class="btn btn-primary">Add to Cart</button>
-          </div>
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        <img src="images/585880390_max.jpg" class="card-img-top" alt="Product">
+        <div class="card-body">
+          <h5 class="card-title">Bohemian Area Rug</h5>
+          <p class="card-text">Boho-chic area rug featuring vibrant colors and intricate patterns, adding warmth and personality to your living space.</p>
+          <p class="card-text"><strong>€149.99</strong></p>
+          <button onclick="addToCart('Bohemian Area Rug', 149.99, this)" class="btn btn-primary">Add to Cart</button>
         </div>
-    <!-- Add more product cards here -->
+      </div>
+    </div>
   </div>
 </div>
 
@@ -201,19 +319,156 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+  // Function to update cart counter
+  function updateCartCounter() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const counter = document.querySelector('.cart-counter');
+    counter.textContent = totalItems;
+  }
+
+  // Function to update item quantity
+  function updateQuantity(productName, change, quantitySpan) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let item = cart.find(item => item.name === productName);
+    if (item) {
+      item.quantity = Math.max(1, item.quantity + change); // Ensure quantity doesn't go below 1
+      quantitySpan.textContent = item.quantity;
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartCounter();
+    }
+  }
+
   // Function to add a product to the cart
   function addToCart(productName, price, button) {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     let item = cart.find(item => item.name === productName);
     if (item) {
-        item.quantity++; // Increment quantity if item already exists
+      item.quantity++;
     } else {
-        cart.push({ name: productName, price: price, quantity: 1 }); // Add item to cart with quantity 1
+      cart.push({ name: productName, price: price, quantity: 1 });
     }
     localStorage.setItem('cart', JSON.stringify(cart));
+    
+    // Change the add button text and disable it
     button.textContent = 'Added to Cart';
     button.disabled = true;
+    
+    // Create product controls container
+    const productControls = document.createElement('div');
+    productControls.className = 'product-controls';
+    
+    // Create quantity controls
+    const quantityControls = document.createElement('div');
+    quantityControls.className = 'quantity-controls';
+    
+    const minusButton = document.createElement('button');
+    minusButton.textContent = '−';
+    minusButton.className = 'quantity-btn';
+    
+    const quantitySpan = document.createElement('span');
+    quantitySpan.className = 'quantity-display';
+    quantitySpan.textContent = '1';
+    
+    const plusButton = document.createElement('button');
+    plusButton.textContent = '+';
+    plusButton.className = 'quantity-btn';
+    
+    minusButton.onclick = () => updateQuantity(productName, -1, quantitySpan);
+    plusButton.onclick = () => updateQuantity(productName, 1, quantitySpan);
+    
+    quantityControls.appendChild(minusButton);
+    quantityControls.appendChild(quantitySpan);
+    quantityControls.appendChild(plusButton);
+    
+    // Create remove button
+    const removeButton = document.createElement('button');
+    removeButton.textContent = 'Remove';
+    removeButton.className = 'btn-remove';
+    removeButton.onclick = () => removeFromCart(productName, button, productControls);
+    
+    // Add all controls to the container
+    productControls.appendChild(quantityControls);
+    productControls.appendChild(removeButton);
+    
+    // Add container after the add button
+    button.parentNode.appendChild(productControls);
+    
+    updateCartCounter();
   }
+
+  // Function to remove a product from the cart
+  function removeFromCart(productName, addButton, productControls) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart = cart.filter(item => item.name !== productName);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    
+    // Reset the add button
+    addButton.textContent = 'Add to Cart';
+    addButton.disabled = false;
+    
+    // Remove the product controls
+    productControls.remove();
+    
+    updateCartCounter();
+  }
+
+  // Initialize cart counter when page loads
+  document.addEventListener('DOMContentLoaded', () => {
+    updateCartCounter();
+    
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const buttons = document.querySelectorAll('.btn-primary');
+    
+    buttons.forEach(button => {
+      const productName = button.getAttribute('onclick').match(/'([^']+)'/)[1];
+      const item = cart.find(item => item.name === productName);
+      if (item) {
+        button.textContent = 'Added to Cart';
+        button.disabled = true;
+        
+        // Create product controls container
+        const productControls = document.createElement('div');
+        productControls.className = 'product-controls';
+        
+        // Create quantity controls
+        const quantityControls = document.createElement('div');
+        quantityControls.className = 'quantity-controls';
+        
+        const minusButton = document.createElement('button');
+        minusButton.textContent = '−';
+        minusButton.className = 'quantity-btn';
+        
+        const quantitySpan = document.createElement('span');
+        quantitySpan.className = 'quantity-display';
+        quantitySpan.textContent = item.quantity;
+        
+        const plusButton = document.createElement('button');
+        plusButton.textContent = '+';
+        plusButton.className = 'quantity-btn';
+        
+        minusButton.onclick = () => updateQuantity(productName, -1, quantitySpan);
+        plusButton.onclick = () => updateQuantity(productName, 1, quantitySpan);
+        
+        quantityControls.appendChild(minusButton);
+        quantityControls.appendChild(quantitySpan);
+        quantityControls.appendChild(plusButton);
+        
+        // Create remove button
+        const removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove';
+        removeButton.className = 'btn-remove';
+        removeButton.onclick = () => removeFromCart(productName, button, productControls);
+        
+        // Add all controls to the container
+        productControls.appendChild(quantityControls);
+        productControls.appendChild(removeButton);
+        
+        // Add container after the add button
+        button.parentNode.appendChild(productControls);
+      }
+    });
+  });
 </script>
 
 </body>

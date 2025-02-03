@@ -45,43 +45,60 @@
     <title>PayApp</title>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"></script>
     <style>
+        :root {
+            --primary-color: #2d3436;
+            --secondary-color: #00b894;
+            --accent-color: #fd79a8;
+            --background-color: #f8f9fa;
+            --text-color: #2d3436;
+            --gradient: linear-gradient(135deg, var(--secondary-color), #55efc4);
+        }
+
         body {
-            background-color: #7aa5d0;
-            font-family: Arial, sans-serif;
-            padding: 0px;
+            font-family: 'Poppins', sans-serif;
+            background: var(--gradient);
+            min-height: 100vh;
         }
 
         .payment-container {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px;
             max-width: 500px;
-            margin: auto; /* Center horizontally */
-            margin-top: 100px; /* Adjust the top margin as needed */
-            padding: 20px;
-            background-color: #ba8147;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            justify-content: center; /* Center vertically */
+            margin: 100px auto;
+            transform: translateY(0);
+            transition: all 0.3s ease;
         }
-        
+
+        .payment-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
 
         .payment-amount {
-            font-size: 24px;
-            margin-bottom: 20px;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 30px;
         }
 
         .pay-button {
-            padding: 10px 20px;
-            font-size: 18px;
-            background-color: #007bff;
-            color: #ffffff;
+            background: var(--gradient);
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            padding: 15px 30px;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s ease;
         }
 
         .pay-button:hover {
-            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
@@ -95,6 +112,11 @@
     <script>
         let account;
         let contract;
+
+        // Separate the amount loading from MetaMask initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            loadAmount();
+        });
 
         async function connectContract() {
             const ABI = [
@@ -113,9 +135,6 @@
             contract = new window.web3.eth.Contract(ABI, address);
         }
 
-        
-        
-        
         async function loadAmount() {
             const urlParams = new URLSearchParams(window.location.search);
             const amount = urlParams.get('amount');
@@ -130,9 +149,6 @@
         
             document.getElementById('amount').innerText = amount;
         }
-        
-        
-        
 
         async function pay() {
             if (typeof window.ethereum === "undefined") {
@@ -162,8 +178,6 @@
                 alert("Failed to make payment. Please try again.");
             }
         }
-        
-        
 
         async function init() {
             if (typeof window.ethereum === "undefined") {
@@ -178,10 +192,6 @@
 
                 // Connect to the contract
                 await connectContract();
-
-
-                // Load amount to be paid
-                await loadAmount();
             } catch (error) {
                 console.error("Error:", error);
                 alert("Failed to connect to the contract. Please try again.");
