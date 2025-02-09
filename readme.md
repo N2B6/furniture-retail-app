@@ -86,26 +86,33 @@ The payment system uses an Ethereum smart contract written in Solidity:
 
 ```solidity
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
-
-contract PaymentContract is Ownable {
-    event Deposit(address indexed sender, uint amount);
-
-    constructor() Ownable(msg.sender) {}
-
-    function deposit() external payable {
-        emit Deposit(msg.sender, msg.value);
+contract Transactions {
+    address public owner;
+    
+    constructor() {
+        owner = msg.sender;
     }
 
-    function withdraw(address payable recipient, uint amount) external onlyOwner {
-        require(address(this).balance >= amount, "Insufficient balance");
-        recipient.transfer(amount);
+    // Function to deposit Ether into the contract
+    function deposit() public payable {}
+
+    // Function to withdraw Ether from the contract
+    function withdraw(uint256 amount) public {
+        require(msg.sender == owner, "Only the owner can withdraw");
+        require(amount <= address(this).balance, "Insufficient balance");
+        payable(msg.sender).transfer(amount);
     }
 
-    function getBalance() external view returns (uint) {
+    // Function to check the contract balance
+    function getBalance() public view returns (uint256) {
         return address(this).balance;
+    }
+
+    // Function to get the contract's address
+    function getAddress() public view returns (address) {
+        return address(this);
     }
 }
 ```
