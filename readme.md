@@ -1,6 +1,6 @@
 # Evok Furniture E-Commerce Platform
 
-![Evok Logo](https://seeklogo.com/images/E/evok-logo-430837FE11-seeklogo.com.png)
+![Evok Logo](/Images/evok-logo-430837FE11-seeklogo.com.png)
 
 A full-stack furniture e-commerce solution with blockchain integration for secure transactions and environmental donations.
 
